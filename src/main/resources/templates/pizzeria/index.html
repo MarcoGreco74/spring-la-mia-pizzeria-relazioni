@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}">
+     
+</head>
+<body>
+    <div th:replace="fragments/topbar :: common_topbar"></div>
+    <div th:if="${list.isEmpty()}">
+        <p> La lista è vuota</p>
+    </div>
+    <div th:unless="${list.isEmpty()}">
+        <th:block th:if="${successMessage != null}">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <span th:text="${successMessage}"></span>              
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </th:block>
+        <th:block th:if="${errorMessage != null}">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${errorMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        </th:block>
+        <!-- MODAL -->
+        <div class="modal fade" th:each="pizz : ${list}" th:attr="id='myModal-' + ${pizz.id}" tabindex="-1" th:attrappend="aria-labelledby='myModalLabel-' + ${pizz.id}" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h1 class="modal-title fs-5" th:attr="id='myModalLabel-' + ${pizz.id}" th:text="${pizz.nome}"></h1>
+                </div>
+                <div class="modal-body">
+                <img th:src="${pizz.foto}" th:style="|width:300px;|" />
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+            </div>
+        </div>
+        <!-- fine modal-->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Nome
+                    </th>
+                    <th>
+                        Descrizione
+                    </th>
+                    <th>
+                        Foto
+                    </th>
+                    <th>
+                        Prezzo
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="pizz : ${list}">
+                    <td th:text="${pizz.nome}">
+                    </td>
+                    <td th:text="${pizz.descrizione.replace('_', ', ')}">
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" th:attr="data-bs-target='#myModal-' + ${pizz.id}" >Vedi foto</button>   
+                    </td>
+                    <td th:text="'€' + ${pizz.prezzo}">
+                    </td>
+                    <td><a th:href="@{|/pizzeria/show_id/${pizz.id}|}" class="list-group-item list-group-item-action"><i class="bi bi-search"></i></a></td>        
+                </tr>
+            </tbody>
+        </table>
+
+        
+
+    </div>
+    <div th:replace="fragments/head :: bootstrapScript"></div>
+</body>
+</html>

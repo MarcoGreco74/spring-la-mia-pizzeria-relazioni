@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragments/head :: head}"></div>
+    <title>Spring library</title>
+</head>
+<body>
+    <div th:replace="fragments/topbar :: common_topbar"></div>
+    <div th:object="${pizza}">
+
+        <!-- MODAL -->
+        <div class="modal fade" th:attr="id='myModal'" tabindex="-1" th:attrappend="aria-labelledby='myModalLabel'" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h1 class="modal-title fs-5" th:attr="id='myModalLabel'" th:text="${pizza.nome}"></h1>
+                </div>
+                <div class="modal-body">
+                <img th:src="${pizza.foto}" th:style="|width:300px;|" />
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+            </div>
+        </div>
+        <!-- fine modal-->
+
+        <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    Nome
+                </th>
+                <th>
+                    Descrizione
+                </th>
+                <th>
+                    Foto
+                </th>
+                <th>
+                    Prezzo
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td th:text="*{nome}">
+                </td>
+                <td th:text="*{descrizione.replace('_', ' ,')}">
+                </td>
+                <td>
+                    <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" th:attr="data-bs-target='#myModal'" >Vedi foto</button> 
+                </td>
+                <td th:text="€ + *{prezzo}">
+                </td>
+                <td><a th:href="@{|/pizzeria|}">Home</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col">
+            <a th:href="@{|/pizzeria/edit/${pizza.id}|}" class="btn btn-outline-success">Modifica pizza</a>
+        </div>
+        <div class="col">
+            <form id="delete_pizza" th:action="@{|/pizzeria/delete/${id}|}" method="post" >
+              <button type="submit" class="btn btn-outline-dark" th:href="@{/pizzeria}" onclick="return confirm('Sei sicuro?')">Cancella pizza</button>
+            </form>
+        </div>
+        <div class="col">
+            <a class="btn btn-success" th:href="@{|/pizzeria/${pizza.id}/offerta|}">Crea offerta</a>
+        </div>
+    </div>
+    <table class="table" th:if="${pizza.offertePizza.size() > 0}">
+        <thead>
+            <tr>
+                <th>
+                    Inizio offerta 
+                </th>
+                <th>
+                    Fine offerta
+                </th>
+                <th>
+                    Titolo
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="offertaPizz : ${pizza.offertePizza}"> <!--da List<OffertePizza> offertePizza-->
+                <td th:text="${offertaPizz.offertaInizio}"></td>
+                <td th:text="${offertaPizz.offertaFine}"></td>
+                <td th:text="${offertaPizz.titolo}"></td>
+                <td>
+                    <a class="btn btn-success" th:href="@{|/offerta/edit/${offertaPizz.id}|}">Modifica offerta</a>
+                    <form id="delete_offerta" th:action="@{|/offerta/delete/${offertaPizz.id}|}" method="post" >
+                        <button type="submit" class="btn btn-outline-dark" th:href="@{/pizzeria}" onclick="return confirm('Sei sicuro?')">Cancella offerta</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div th:unless="${pizza.offertePizza.size() > 0}">
+       <div class="alert alert-primary">
+        Non ci sono offerte per questa pizza
+       </div>
+    </div>
+    </div>
+    <div th:replace="fragments/head :: bootstrapScript"></div>
+</body>
+</html>

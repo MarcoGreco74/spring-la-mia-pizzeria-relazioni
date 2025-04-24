@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragments/head :: head}"></div>
+</head>
+<body>
+    <div th:replace="fragments/topbar :: common_topbar"></div>
+    <h3>Offerta per la <span th:text="${offertaPizza.pizzeria.nome}"></span></h3>
+    <form id="offerta_pizza" th:object="${offertaPizza}" th:action="${editMode} ? @{|/offerta/edit/${offertaPizza.id}|} : @{/offerta/create}" method="post" >
+        <input type="hidden" th:field="*{pizzeria}" id="pizzeria">
+        <div class="row">
+            <div class="col">
+              <input type="date" id="dataIn" th:field="*{offertaInizio}" class="form-control" placeholder="Data inizio" aria-label="dataIn" th:errorClass="is-invalid">
+            <!--<div th:if="${#fields.hasErrors('offertaInizio')}" class="invalid-feedback">  
+              <ul>
+                <li th:each="err : ${#fields.allErrors()}" th:text="${err}"></li>
+              </ul>
+            </div>-->
+            </div>
+            
+            <div class="col">
+              <input type="date" id="dataOut" th:field="*{offertaFine}" class="form-control" placeholder="data fine" aria-label="dataOut">
+            </div>
+            <div class="col">
+              <input type="text" id="titolo" th:field="*{titolo}" class="form-control" placeholder="Titolo" aria-label="titolo">
+            </div>
+          </div>
+          <div class="col-12">
+            <button class="btn btn-outline-success" type="submit">Save</button>
+          </div>
+    </form>
+</body>
+</html>

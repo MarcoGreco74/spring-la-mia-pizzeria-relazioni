@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragments/head :: head}"></div>
+</head>
+<body>
+    <div th:replace="fragments/topbar :: common_topbar"></div>
+    <form id="modifica_pizza" th:object="${modificapizza}" th:action="@{|/pizzeria/edit/${modificapizza.id}|}" method="post" >
+        <ul>
+            <li th:each="err : ${#fields.allErrors()}" th:text="${err}"></li>
+        </ul>
+        <div class="row">
+            <div class="col">
+              <input type="text" id="nome" th:field="*{nome}" class="form-control" placeholder="Nome" aria-label="nome">
+            </div>
+            <div class="col">
+              <input type="text" id="descrizione" th:field="*{descrizione}" class="form-control" placeholder="Descrizione" aria-label="descrizione">
+            </div>
+            <div class="col">
+              <input type="text" id="foto" th:field="*{foto}" class="form-control" placeholder="Foto" aria-label="foto">
+            </div>
+            <div class="col">
+              <input type="number" id="prezzo" th:field="*{prezzo}" class="form-control" placeholder="Prezzo" aria-label="prezzo">
+            </div>
+          </div>
+          <div class="col-12">
+            <button class="btn btn-outline-success" type="submit">Save</button>
+          </div>
+    </form>
+</body>
+</html>
