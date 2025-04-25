@@ -11,13 +11,7 @@
         <div class="row">
             <div class="col">
               <input type="date" id="dataIn" th:field="*{offertaInizio}" class="form-control" placeholder="Data inizio" aria-label="dataIn" th:errorClass="is-invalid">
-            <!--<div th:if="${#fields.hasErrors('offertaInizio')}" class="invalid-feedback">  
-              <ul>
-                <li th:each="err : ${#fields.allErrors()}" th:text="${err}"></li>
-              </ul>
-            </div>-->
             </div>
-            
             <div class="col">
               <input type="date" id="dataOut" th:field="*{offertaFine}" class="form-control" placeholder="data fine" aria-label="dataOut">
             </div>

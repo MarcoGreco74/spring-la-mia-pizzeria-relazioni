@@ -22,10 +22,18 @@
             <div class="col">
               <input type="number" id="prezzo" th:field="*{prezzo}" class="form-control" placeholder="Prezzo" aria-label="prezzo">
             </div>
+            
           </div>
           <div class="col-12">
             <button class="btn btn-outline-success" type="submit">Save</button>
             <a class="btn btn-outline-dark" th:href="@{/pizzeria}">Annulla</a>
+          </div>
+          <div class="col">
+              <h4>Ingredienti</h4>
+              <div th:each="ingr : ${ingredientiList}">
+                <input type="checkbox" th:id="${ingr.id}" th:value="${ingr.id}" th:text="${ingr.ingredienti}" th:field="*{ingredientiPizza}"/>
+                <label th:for="${ingr.id}" th:text="${ingr.ingredienti}"></label>
+              </div>
           </div>
     </form>
 </body>

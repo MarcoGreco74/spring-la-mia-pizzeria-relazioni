@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}">
+</head>
+<body>
+<div th:replace="fragments/topbar :: common_topbar"></div>
+<h3 th:text="'Ingredienti'"></h3>
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            <form id="form_ingredienti" th:object="${ingredientiObj}" th:action="@{/ingredienti/create}" method="post">
+                <input class="form-control" type="text" id="ingrediente" th:field="*{ingredienti}"/>
+                <button type="submit" class="btn btn-success">add</button>
+            </form>
+            <ul class="list-group" th:if="${ingredientiList.size() > 0}">
+                <li class="list-group-item d-flex justify-content-between" th:each="item : ${ingredientiList}">
+                    <span th:text="${item.ingredienti}"></span>
+                    <form id="form_cxl_ingrediente" method="post" th:action="@{|/ingredienti/delete/${item.id}|}">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Sei sicuro')"><i class="bi bi-x-circle"></i></button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/head :: bootstrapScript"></div>
+</body>
+</html>

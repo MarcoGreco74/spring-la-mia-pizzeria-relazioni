@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import it.corsospring.spring.spring_la_mia_pizzeria_relazioni.model.Ingredienti;
 import it.corsospring.spring.spring_la_mia_pizzeria_relazioni.model.OffertePizza;
 import it.corsospring.spring.spring_la_mia_pizzeria_relazioni.model.Pizzeria;
+import it.corsospring.spring.spring_la_mia_pizzeria_relazioni.repository.IngredientiPizzaRepository;
 import it.corsospring.spring.spring_la_mia_pizzeria_relazioni.repository.OffertaPizzaRepository;
 import it.corsospring.spring.spring_la_mia_pizzeria_relazioni.repository.PizzeriaRepository;
 import jakarta.validation.Valid;
@@ -28,11 +30,13 @@ public class PizzeriaController {
 
     private PizzeriaRepository pizzeriaRepository;
     private OffertaPizzaRepository repositoryOfferta;
+    private IngredientiPizzaRepository ingredientiRepository;
 
     @Autowired
-    public PizzeriaController(PizzeriaRepository pizzeriaRepository, OffertaPizzaRepository repositoryOfferta ){
+    public PizzeriaController(PizzeriaRepository pizzeriaRepository, OffertaPizzaRepository repositoryOfferta, IngredientiPizzaRepository ingredientiRepository ){
         this.pizzeriaRepository = pizzeriaRepository;
         this.repositoryOfferta = repositoryOfferta;
+        this.ingredientiRepository = ingredientiRepository;
     }
     
     @GetMapping
@@ -69,6 +73,8 @@ public class PizzeriaController {
    @GetMapping("/create")
       public String createPizza(Model model){
         model.addAttribute("nuovapizza", new Pizzeria());
+        model.addAttribute("ingredientiList", ingredientiRepository.findAll());
+        model.addAttribute("ingredientiObj", new Ingredienti()); // non serve
         return "pizzeria/create";
     }
     
@@ -77,6 +83,7 @@ public class PizzeriaController {
     if(bindingResult.hasErrors()) {
         return "pizzeria/create";
         }
+        model.addAttribute("ingredientiList", ingredientiRepository.findAll());
         pizzeriaRepository.save(formPizza);
         redirectAttributes.addFlashAttribute("successMessage", "Pizza creata con successo!");
         return "redirect:/pizzeria";
@@ -85,6 +92,7 @@ public class PizzeriaController {
    @GetMapping("/edit/{id}")
    public String edit(@PathVariable("id") Integer id, Model model){
     model.addAttribute("modificapizza", pizzeriaRepository.findById(id).get());
+    model.addAttribute("ingredientiList", ingredientiRepository.findAll());
     return "/pizzeria/edit";
    }
 
@@ -93,6 +101,7 @@ public class PizzeriaController {
     if(bindingResult.hasErrors()) {
         return "pizzeria/edit";
         }
+        model.addAttribute("ingredientiList", ingredientiRepository.findAll());
         pizzeriaRepository.save(formPizza);
         redirectAttributes.addFlashAttribute("successMessage", "Pizza modificata con successo!");
         return "redirect:/pizzeria";
@@ -117,4 +126,5 @@ public class PizzeriaController {
         model.addAttribute("editMode", false);
         return "offerte/edit";
     }
+
 }
