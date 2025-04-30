@@ -30,7 +30,6 @@
               <h4>Ingredienti</h4>
               <div th:each="ingr : ${ingredientiList}">
                 <input type="checkbox" th:id="${ingr.id}" th:value="${ingr.id}" th:text="${ingr.ingredienti}" th:field="*{ingredientiPizza}"/>
-                <label th:for="${ingr.id}" th:text="${ingr.ingredienti}"></label>
               </div>
           </div>
     </form>
